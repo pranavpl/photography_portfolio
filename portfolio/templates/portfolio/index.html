@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ram's Photography Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+
+    /* Header Styles */
+    header {
+      background-color: #2c3e50;
+      color: #fff;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 36px;
+      margin: 0;
+    }
+
+    /* Navigation Styles */
+    nav {
+      background-color: #34495e;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 20px;
+      margin: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #2980b9;
+    }
+
+    /* Main Content Styles */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    section {
+      margin-bottom: 50px;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-top: 0;
+    }
+
+    /* Work Experience Styles */
+    .work-experience {
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 5px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .work-experience h3 {
+      margin-top: 0;
+    }
+
+    .work-experience ul {
+      list-style-type: disc;
+      margin-left: 20px;
+    }
+
+    /* My Works Styles */
+    .my-works {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 20px;
+    }
+
+    .my-works img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Edit Button Styles */
+    .edit-button {
+      margin-top: 10px;
+      text-align: right;
+    }
+
+    .edit-button button {
+      background-color: #2c3e50;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .edit-button button:hover {
+      background-color: #34495e;
+    }
+
+    /* Contact Styles */
+    #contact {
+      text-align: center;
+    }
+
+    #contact p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ram's Photography Portfolio</h1>
+  </header>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#education">Education</a>
+    <a href="#work-experience">Work Experience</a>
+    <a href="#my-works">My Works</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <main>
+    <section id="about">
+      <h2>About the Photographer</h2>
+      <p>{{ about_text }}</p>
+    </section>
+
+    <section id="education">
+      <h2>Education And Certification</h2>
+      <ul>
+        {% for item in education %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+      <div class="edit-button">
+        <button id="editEducation">Edit</button>
+      </div>
+    </section>
+
+    <section id="work-experience">
+      <h2>Work Experience</h2>
+      <div class="work-experience">
+        <h3>{{ work_experience.start_date }} – {{ work_experience.end_date }}</h3>
+        <h4>{{ work_experience.company }} – {{ work_experience.location }}</h4>
+        <h4>{{ work_experience.job_title }}</h4>
+        <ul>
+          {% for item in work_experience.responsibilities %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="edit-button">
+        <button id="editWorkExperience">Edit</button>
+      </div>
+    </section>
+
+    <section id="my-works">
+      <h2>My Works</h2>
+      <div class="my-works">
+        {% for image in images %}
+        <img src="{{ image.url }}" alt="{{ image.alt }}">
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>{{ contact_info }}</p>
+    </section>
+  </main>
+
+  <script>
+    // Add your JavaScript code here
+    // For example, you can add functionality to edit the bio section
+    const bioSection = document.querySelector('#about p');
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Edit Bio';
+    bioSection.appendChild(editButton);
+
+    editButton.addEventListener('click', () => {
+      const newBio = prompt('Enter the new bio:');
+      if (newBio) {
+        bioSection.textContent = newBio;
+      }
+    });
+
+    // Add functionality to edit the Education And Certification section
+    const educationSection = document.querySelector('#education ul');
+    const editEducationButton = document.getElementById('editEducation');
+    editEducationButton.addEventListener('click', () => {
+      const newEducation = prompt('Enter the new education details:');
+      if (newEducation) {
+        educationSection.innerHTML = newEducation.split('\n').map(item => `<li>${item}</li>`).join('');
+      }
+    });
+
+    // Add functionality to edit the Work Experience section
+    const workExperienceSection = document.querySelector('#work-experience .work-experience');
+    const editWorkExperienceButton = document.getElementById('editWorkExperience');
+    editWorkExperienceButton.addEventListener('click', () => {
+      const newWorkExperience = prompt('Enter the new work experience details:');
+      if (newWorkExperience) {
+        workExperienceSection.innerHTML = newWorkExperience.replace(/\n/g, '<br>');
+      }
+    });
+  </script>
+</body>
+</html>
